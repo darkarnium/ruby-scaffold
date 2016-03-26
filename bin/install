@@ -1,0 +1,38 @@
+#!/usr/bin/env ruby
+
+# Fix up pathing to include local libraries.
+$LOAD_PATH.unshift(
+  File.join(File.dirname(File.realpath(__FILE__)), '..', 'lib')
+)
+
+# Scaffold dependency loader.
+require 'scaffold'
+
+# Parse command line arguments.
+begin
+  options = Net::KernelPicnic::Scaffold::OptionParser::Install.new
+  options.parse(ARGV)
+rescue => e
+  puts "FATAL - Unable to parse command line arguments: #{e.message}"
+  abort
+end
+
+# Standard logger.
+begin
+  logger = Net::KernelPicnic::Common::Log.new
+  logger.destination('STDOUT')
+rescue => e
+  puts "FATAL - Unable to setup logger: #{e.message}"
+  abort
+end
+
+# Install the init script.
+logger.info('Attempting installation of Scaffold')
+begin
+  Net::KernelPicnic::Scaffold::Service::Install.systemd
+rescue => e
+  logger.fatal("Unable to install service: #{e.message}")
+  abort
+end
+
+logger.info('Installation complete.')
