@@ -11,11 +11,11 @@ module Scaffold
       # Params:
       desc 'execute', 'Executes an example'
       def execute
-        logger = Scaffold::Log.new
+        logger = Scaffold::Log.new(destination: options[:log_file])
 
         # Load the specified configuration file.
         logger.info("Loading configuration from #{options[:config_file]}")
-        _ = Scaffold::Config.new(options[:config_file])
+        _ = Scaffold::Config.new(file: options[:config_file])
         logger.info('Configuration loaded')
       end
     end

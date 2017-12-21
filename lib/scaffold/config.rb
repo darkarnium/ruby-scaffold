@@ -13,22 +13,21 @@ module Scaffold
     # Constructor for configuration object.
     # Params:
     # +file+:: Configuration file path to load.
-    def initialize(file)
-      load(file)
+    def initialize(file:)
+      load(file: file)
     end
 
     # Attempts to load the given configuration file.
     # Params:
     # +file+:: Configuration file path to load.
-    def load(file)
-      raise 'No configuration file path provided' if file.empty?
+    def load(file:)
       unless File.exist?(file)
         raise "Unable to locate configuration file at: #{file}"
       end
 
       # Attempt to load the YAML file and ensure all keys are symbols.
       begin
-        @directive = symbolize_keys(YAML.load_file(file))
+        @directive = symbolize_keys(hash: YAML.load_file(file))
       rescue StandardError => err
         raise err
       end
@@ -36,14 +35,14 @@ module Scaffold
 
     # Recursively converts all keys in a given hash to symbols.
     # Params:
-    # +in_hash+:: Hash to symbolize.
-    def symbolize_keys(in_hash = {})
+    # +hash+:: Hash to symbolize.
+    def symbolize_keys(hash: {})
       symbolized = {}
 
       # Iterate over entries and recurse if N dimension is a Hash.
-      in_hash.each do |key, value|
+      hash.each do |key, value|
         if value.is_a?(Hash)
-          symbolized[key.to_sym] = symbolize_keys(value)
+          symbolized[key.to_sym] = symbolize_keys(hash: value)
         else
           symbolized[key.to_sym] = value
         end

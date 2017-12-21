@@ -4,10 +4,12 @@ module Scaffold
   # Provides an extended Ruby logger to provide a default logging class, with a
   # default log retention and output format.
   class Log < Logger
+    attr_writer :level
+
     # Initialize the parent log object.
     # Params:
     # +destination+:: The log destination (file, or STDOUT).
-    def initialize(destination = 'STDOUT')
+    def initialize(destination: 'STDOUT')
       @level = INFO
 
       # Set the default formatter.
@@ -17,28 +19,21 @@ module Scaffold
       end
 
       # Set the log output destination.
-      output(destination)
+      output(destination: destination)
     end
 
     # Set the log destination.
     # Params:
-    # +output+:: Requested log destination (STDOUT, or filepath).
-    def output(output)
-      raise 'No log destination provided' unless output
-
-      if output.casecmp('STDOUT').zero?
+    # +destination+:: Requested log destination (STDOUT, STDERR, or filepath).
+    def output(destination: 'STDERR')
+      case destination
+      when 'STDERR'
+        @logdev = Logger::LogDevice.new(STDERR)
+      when 'STDOUT'
         @logdev = Logger::LogDevice.new(STDOUT)
       else
-        @logdev = Logger::LogDevice.new(output)
+        @logdev = Logger::LogDevice.new(destination)
       end
-    end
-
-    # Set the log level.
-    # Params:
-    # +level+:: Requested log level (supports all Ruby Logger levels).
-    def level(level)
-      raise 'No log level provided' unless level
-      @level = level
     end
   end
 end
