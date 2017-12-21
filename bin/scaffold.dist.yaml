@@ -1,7 +1,0 @@
----
-directories:
-  config: '/tmp'
-  lock: '/tmp'
-
-logger:
-  destination: STDOUT

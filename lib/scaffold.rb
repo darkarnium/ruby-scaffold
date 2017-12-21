@@ -1,19 +1,9 @@
-# Common.
-require 'net/kernelpicnic/common/debug'
-require 'net/kernelpicnic/common/log'
-require 'net/kernelpicnic/common/config'
-require 'net/kernelpicnic/common/daemon'
-require 'net/kernelpicnic/common/optionparser'
+require 'scaffold/cli'
+require 'scaffold/log'
+require 'scaffold/debug'
+require 'scaffold/config'
+require 'scaffold/version'
 
-# Scaffold Versioning.
-require 'net/kernelpicnic/scaffold/version'
-
-# Scaffold Command-line Argument Parsers.
-require 'net/kernelpicnic/scaffold/optionparser/general'
-require 'net/kernelpicnic/scaffold/optionparser/install'
-
-# Scaffold Service Helpers.
-require 'net/kernelpicnic/scaffold/service/install'
-
-# Scaffold Exception Handlers.
-require 'net/kernelpicnic/scaffold/exception/example_exception'
+# A Thor enabled Ruby project Scaffold.
+module Scaffold
+end

@@ -1,51 +1,7 @@
 #!/usr/bin/env ruby
+lib = File.expand_path('../../lib', __FILE__)
+$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
-# Fix up pathing to include local libraries.
-$LOAD_PATH.unshift(
-  File.join(File.dirname(File.realpath(__FILE__)), '..', 'lib')
-)
-
-# Scaffold dependency loader.
 require 'scaffold'
 
-# Parse command line arguments.
-begin
-  options = Net::KernelPicnic::Scaffold::OptionParser::General.new
-  options.parse(ARGV)
-rescue => e
-  puts "FATAL - Unable to parse arguments: #{e.message}"
-  abort
-end
-
-# Load the configuration.
-begin
-  config = Net::KernelPicnic::Common::Config.new
-  config.load(options[:config_file])
-rescue => e
-  puts "FATAL - Unable to load configuration: #{e.message}"
-  abort
-end
-
-# Setup a logger.
-begin
-  logger = Net::KernelPicnic::Common::Log.new
-  logger.destination(config[:logger][:destination])
-rescue => e
-  puts "FATAL - Unable to setup logger: #{e.message}"
-  abort
-end
-
-# Gracefully shutdown on signals.
-running = true
-
-Signal.trap('TERM') { running = false }
-Signal.trap('QUIT') { running = false }
-Signal.trap('INT') { running = false }
-
-# Main loop.
-logger.info("Scaffold #{Net::KernelPicnic::Scaffold::VERSION} started.")
-while running
-  # ...
-end
-
-logger.info('Signal received, gracefully shutting down.')
+Scaffold::Cli.start

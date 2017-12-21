@@ -1,46 +1,26 @@
 # coding: utf-8
+
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
+# Load the version directly from the source tree.
+require 'scaffold/version'
+
 Gem::Specification.new do |spec|
   spec.name = 'Scaffold'
-  spec.version = '0.0.1'
+  spec.version = Scaffold::VERSION
   spec.authors = ['Peter Adkins']
   spec.email = ['peter.adkins@kernelpicnic.net']
-  spec.summary = 'Implements a basic scaffold for Ruby libraries or services'
+
+  spec.summary = 'Implements a basic scaffold for Ruby tools'
   spec.description = '...'
   spec.homepage = 'http://www.kernelpicnic.net'
 
-  spec.files = [
-    # Scaffold dependency loader.
-    'lib/scaffold.rb',
+  spec.files = Dir['*.md', 'bin/*', 'lib/**/*.rb']
+  spec.executables = 'scaffold'
+  spec.require_paths = ['lib']
 
-    # Common.
-    'net/kernelpicnic/common/debug',
-    'net/kernelpicnic/common/log',
-    'net/kernelpicnic/common/config',
-    'net/kernelpicnic/common/daemon',
-    'net/kernelpicnic/common/optionparser',
-
-    # Scaffold Versioning.
-    'net/kernelpicnic/scaffold/version',
-
-    # Scaffold Command-line Argument Parsers.
-    'net/kernelpicnic/scaffold/optionparser/general',
-    'net/kernelpicnic/scaffold/optionparser/install',
-
-    # Scaffold Service.
-    'net/kernelpicnic/scaffold/service/install'
-
-  ]
-  spec.test_files = [
-    # 'tests/test_NAME.rb'
-  ]
-  spec.executables = [
-    'bin/scaffold',
-    'bin/install'
-  ]
-  spec.require_paths = [
-    'lib'
-  ]
+  spec.add_runtime_dependency 'thor', '= 0.20.0'
+  spec.add_development_dependency 'bundler', '~> 1.15'
+  spec.add_development_dependency 'rake', '~> 10.0'
 end
